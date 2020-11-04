@@ -8,17 +8,20 @@ import { BrandService } from '../../services/brand.service';
   styleUrls: ['./brands.component.css']
 })
 export class BrandsComponent implements OnInit {
-  brands: Brand[];
-
+  dataList: Brand;
+  brands = [this.dataList];
 
   constructor(private brandService: BrandService) { }
 
   ngOnInit() {
-    this.brandService.getBrands().subscribe(brands => {
-      data => console.log('succes', data)
-      error => console.log('oops', error)
-      this.brands = brands
-    });
+    this.brandService.getBrands().subscribe((data) => {
+      console.log(data);
+      this.dataList = data
+      //this.brands = data
+    })
+   // this.brandService.getBrands().subscribe((data) => this.brands = data )
+
+    //this.brandService.getBrands().pipe
   }
 
 }

@@ -1,0 +1,15 @@
+{
+  //"/v2/": {
+  //"target": "https://sandbox-api.brewerydb.com/v2/",
+  //"secure": false
+  //}
+  "/api": {
+    "target": "https://sandbox-api.brewerydb.com/v2/",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}
+

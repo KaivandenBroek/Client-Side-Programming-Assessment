@@ -1,9 +1,10 @@
 {
   "name": "client-side-programming-assessment",
   "version": "0.0.0",
+  "proxy": "https://sandbox-api.brewerydb.com/v2/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "startapp": "ng serve --proxy-config src/proxy.conf.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
