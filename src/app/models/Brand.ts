@@ -5,8 +5,6 @@ export class Brand {
   isVerified: string;
   description: string;
   website: string;
-  established: string;
-  mailingListUrl: string;
-  isOrganic: string;
   images: string;
+  countryIsocode: string;
 }

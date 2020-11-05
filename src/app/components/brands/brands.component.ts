@@ -8,20 +8,26 @@ import { BrandService } from '../../services/brand.service';
   styleUrls: ['./brands.component.css']
 })
 export class BrandsComponent implements OnInit {
-  dataList: Brand;
-  brands = [this.dataList];
+  dataList: dataClass;
+  brands: [Brand] = [];
 
   constructor(private brandService: BrandService) { }
 
   ngOnInit() {
-    this.brandService.getBrands().subscribe((data) => {
+    this.brandService.getBrands4().subscribe((data) => {
       console.log(data);
       this.dataList = data
-      //this.brands = data
+      for (let i of this.dataList.data) {
+        this.brands.push(i);
+        //console.log(i);
+      }
+      //this.brands = [this.dataList.data[0]];
+      //console.log(this.brands[0].id);
     })
-   // this.brandService.getBrands().subscribe((data) => this.brands = data )
-
-    //this.brandService.getBrands().pipe
   }
 
+}
+// a dataClass to read the nestles json data
+class dataClass {
+  data: any
 }
