@@ -14,29 +14,26 @@
 
 .item {
   height: 25px;
-
+  text-decoration: none;
+  color: #ccc;
+  font: 25px/1 Helvetica, Verdana, sans-serif;
+  text-transform: uppercase;
+  -webkit-transition: all 0.5s ease;
   margin-right: 0px;
-  border-right: 1px solid #aaa;
+  border-right: 1px solid #aaaa;
+  border-bottom: 1px solid #aaaa;
   padding: 0 20px;
 }
 
-  .item:last-child {
-    border-right: none;
-  }
+.item:last-child {
 
-  .item {
-    text-decoration: none;
-    color: #ccc;
-    font: 25px/1 Helvetica, Verdana, sans-serif;
-    text-transform: uppercase;
-    -webkit-transition: all 0.5s ease;
-  }
+}
 
-    .item:hover {
-      color: #333;
-    }
+.item:hover {
+   color: #333;
+}
 
-  .item.active {
-    font-weight: bold;
-    color: #333;
-  }
+.item.active {
+  font-weight: bold;
+  color: #333;
+}

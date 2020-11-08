@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Brand } from 'src/app/models/Brand';
+import { Brewery } from 'src/app/models/Brewery';
 
 @Component({
   selector: 'app-brand-item',
@@ -8,7 +8,7 @@ import { Brand } from 'src/app/models/Brand';
 })
 export class BrandItemComponent implements OnInit {
 
-  @Input() brand: Brand;
+  @Input() brewery: Brewery;
 
   constructor() { }
 

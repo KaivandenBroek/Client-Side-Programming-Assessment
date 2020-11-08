@@ -1,4 +1,4 @@
-export class Brand {
+export class Brewery {
   id: string;
   name: string;
   nameShortDisplay: string;
@@ -6,5 +6,5 @@ export class Brand {
   description: string;
   website: string;
   images: string;
-  countryIsocode: string;
+  countryIsoCode: string;
 }

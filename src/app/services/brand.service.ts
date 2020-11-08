@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Brand } from '../models/Brand';
+import { Brewery } from '../models/Brewery';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,33 +24,37 @@ export class BrandService {
     }),
   };
 
-  getBrands(): Observable<any> {
+  getBreweriesData(): Observable<any> {  // all breweries
     this.endPoint = 'breweries?'
     this.URL = this.URL
     return this.http
       .get<any>(`${this.URL}${this.endPoint}${this.APIkey}`, this.header)
   }
 
-  getBrands4(): Observable<any> {
-    this.endPoint = 'brewery/BznahA/locations?'
+  getBeersData(): Observable<any> {  // all beers
+    this.endPoint = 'beerswithBreweries?'
     this.URL = this.URL
     return this.http
       .get<any>(`${this.URL}${this.endPoint}${this.APIkey}`, this.header)
   }
 
-  getBrands3(): Observable<Brand> {
+  getBrewBeerData(): Observable<any> {  // beers of brewery
+    this.endPoint = 'brewery/HaPdSL/beers?'
     this.URL = this.URL
     return this.http
-      .get<Brand>(`${this.URL}breweries?key=${this.APIkey}`, this.header)
+      .get<any>(`${this.URL}${this.endPoint}${this.APIkey}`, this.header)
   }
 
-  getBrands2() {
-    let headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Access-Control-Allow-Methods', 'get');
-    headers.append('Access-Control-Allow-Headers', 'origin, Content-Type, accept');
-    headers.append('Access-Control-Allow-Origin', 'https://sandbox-api.brewerydb.com/v2/');
-    //return this.http.get(`${this.URL}breweries?key=${this.APIkey}`, this.header)
-    return this.http.get(`${this.URL}breweries?key=${this.APIkey}`, { headers: headers })
+  getBreweryLocData(brandId: string): Observable<any> {  // location of brewery
+    this.endPoint = 'brewery/' + brandId + '/locations?'
+    this.URL = this.URL
+    return this.http
+      .get<any>(`${this.URL}${this.endPoint}${this.APIkey}`, this.header)
+  }
+  getBreweryBeerData(brandId: string): Observable<any> {  // location of brewery
+    this.endPoint = 'brewery/' + brandId + '/beers?'
+    this.URL = this.URL
+    return this.http
+      .get<any>(`${this.URL}${this.endPoint}${this.APIkey}`, this.header)
   }
 }
