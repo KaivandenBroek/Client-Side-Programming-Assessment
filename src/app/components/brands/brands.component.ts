@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Brewery } from '../../models/Brewery';
+import { Location } from '../../models/Location';
+import { BreweryBeers } from '../../models/BreweryBeers';
 import { dataClass } from '../../models/dataClass';
 import { BrandService } from '../../services/brand.service';
 
@@ -10,94 +12,69 @@ import { BrandService } from '../../services/brand.service';
 })
 export class BrandsComponent implements OnInit {
   dataList: dataClass;
-  dataList2: dataClass;
+  dataListLoc: dataClass;
   dataListBeers: dataClass;
-  beers: [Brewery] = [null];
+  beers: [BreweryBeers] = [null];
   breweries: [Brewery] = [null];
-  locations: [Brewery] = [null];
+  locations: [Location] = [null];
+  beersAndCountry: [Brewery] = [null];
 
   constructor(private brandService: BrandService) { }
 
   ngOnInit() {
-    // get data
-    this.getBreweries();
-    // sort data to one list
-    this.createList();
+    this.getBreweries(); // get data
+    this.createList(); // sort data
+    //TODO group data buttons
   }
 
   createList() {
-    // TODO think of a way to insert breweryID in both lists
     // match beers and location list then get:
     // locations => countryIsoCode
     // beers = > name
+    let idMap = this.breweries.map(brew => {
+      const loc = this.locations.find(location => location.brewId === brew.brewId);
+      return {
+        ...this.beersAndCountry,
+        location: loc ? loc.brewId : undefined
+      };
+    });
+    console.log(idMap);
   }
 
   getBreweries() {
-    this.breweries.pop();
-    // request breweries
-    this.brandService.getBreweriesData().subscribe((data) => {
-      console.log(data);
+    this.breweries.pop(); // for now, i have to clear the 1st null value
+    this.beers.pop();
+    this.locations.pop();
+
+    this.brandService.getBreweriesData().subscribe((data) => {     // request breweries
       this.dataList = data;
       for (let i of this.dataList.data) {
         this.breweries.push(i);
-        // request locations per brewery
-          this.brandService.getBreweryLocData(i.id).subscribe((data) => {
-            this.dataList2 = data;
-            if (this.dataList2.data) {
-              for (let i of this.dataList2.data) {
-                this.locations.push(i);
-              }
-            }
-          })
-        // request beers per brewery
-        this.brandService.getBreweryBeerData(i.id).subscribe((data) => {
-          this.dataListBeers = data;
-          if (this.dataListBeers.data) {
-            for (let i of this.dataListBeers.data) {
-              this.beers.push(i);
-            }
-          }
-        })
-      }
-    })
-    console.log(this.beers);
-    console.log(this.locations);
-  }
-
-  getBeers() {
-    this.beers.pop();
-    this.brandService.getBeersData().subscribe((data) => {
-      console.log(data);
-      this.dataListBeers = data;
-      for (let i of this.dataListBeers.data) {
-        this.beers.push(i);
+        this.getLocations(i.id); // request locations per brewery
+        this.getBreweryBeers(i.id); // request beers per brewery
       }
     })
   }
 
-  getBreweriesLoc() {
-    this.locations.pop();
-    for (let brewery of this.dataList.data) {
-      this.brandService.getBreweryLocData(brewery.id).subscribe((data) => {
-        console.log(data);
-        this.dataList2 = data;
-        if (this.dataList2.data) {
-          for (let i of this.dataList2.data) {
-            this.locations.push(i);
-          }
+  getLocations(id: string) {
+    this.brandService.getBreweryLocData(id).subscribe((data) => {
+      this.dataListLoc = data;
+      if (this.dataListLoc.data) {
+        for (let j of this.dataListLoc.data) {
+          j.brewId = id // adding brewery ID to the list
+          this.locations.push(j);
         }
-      })
-
-    }
+      }
+    })
   }
 
-  getLocation(brewery) {
-    this.brandService.getBreweryLocData(brewery.id).subscribe((data) => {
-      console.log(data);
-      this.dataList2 = data;
-      if (this.dataList2.data) {
-        for (let i of this.dataList2.data) {
-          this.locations.push(i);
+  getBreweryBeers(id: string) {
+    this.brandService.getBreweryBeerData(id).subscribe((data) => {
+      this.dataListBeers = data;
+      if (this.dataListBeers.data) {
+        for (let k of this.dataListBeers.data) {
+          k.brewId = id // adding brewery ID to the list
+          this.beers.push(k);
         }
       }
     })
