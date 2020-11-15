@@ -4,6 +4,8 @@ import { Location } from '../../models/Location';
 import { BreweryBeers } from '../../models/BreweryBeers';
 import { dataClass } from '../../models/dataClass';
 import { BrandService } from '../../services/brand.service';
+import { BeersAndCountry } from '../../models/BeersAndCountry';
+import { generate } from 'rxjs';
 
 @Component({
   selector: 'app-brands',
@@ -17,7 +19,7 @@ export class BrandsComponent implements OnInit {
   beers: [BreweryBeers] = [null];
   breweries: [Brewery] = [null];
   locations: [Location] = [null];
-  beersAndCountry: [Brewery] = [null];
+  beersAndCountry: [BeersAndCountry] = [null];
 
   constructor(private brandService: BrandService) { }
 
@@ -28,17 +30,29 @@ export class BrandsComponent implements OnInit {
   }
 
   createList() {
-    // match beers and location list then get:
-    // locations => countryIsoCode
-    // beers = > name
-    let idMap = this.breweries.map(brew => {
-      const loc = this.locations.find(location => location.brewId === brew.brewId);
-      return {
-        ...this.beersAndCountry,
-        location: loc ? loc.brewId : undefined
-      };
-    });
-    console.log(idMap);
+    //let idMap = this.breweries.map(brew => {
+    //  const loc = this.locations.find(location => location.brewId === brew.brewId);
+    //  return {
+    //    ...this.beersAndCountry,
+    //    location: loc ? loc.brewId : undefined
+    //  };
+    //});
+    //console.log(idMap);
+    this.beersAndCountry.pop();
+    for (let beer of this.beers) {
+      for (let loc of this.locations) {
+        if (beer.brewId == loc.brewId) {
+          let data = {
+            brewId: beer.brewId,
+            name: beer.name,
+            countryIsoCode: loc.countryIsoCode
+          }
+          this.beersAndCountry.push(data);
+          console.log(data);
+        }
+      }
+    }
+    console.log(this.beersAndCountry)
   }
 
   getBreweries() {
